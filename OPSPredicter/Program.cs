@@ -12,7 +12,8 @@ namespace OPSPredicter
 {
     class Program
     {
-            static void Main(string[] args)
+        [STAThread]
+        static void Main(string[] args)
             {
             //var device = DeviceDescriptor.GPUDevice(0);
 
@@ -23,6 +24,8 @@ namespace OPSPredicter
             //OPSPredict.
 
             Parser.getContent("https://www.mlb.com/gameday/astros-vs-dodgers/2017/11/01/526517?#game_state=final,game_tab=box,game=526517");
+
+            //Choose neural network to test and save model to model
             }
         }
     }
