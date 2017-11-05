@@ -1,5 +1,8 @@
 ﻿using System;
 using CNTK;
+using Newtonsoft.Json;
+using System.IO;
+using System.Text;
 
 namespace NeuralNetworks
 {
@@ -8,6 +11,8 @@ namespace NeuralNetworks
     /// </summary>
     public class NeuralNetwork
     {
+        public string ModelName;
+
         int[] layer; //layer information
         Layer[] layers; //layers in the network
 
@@ -15,8 +20,10 @@ namespace NeuralNetworks
         /// Constructor setting up layers
         /// </summary>
         /// <param name="layer">Layers of this network</param>
-        public NeuralNetwork(int[] layer)
+        public NeuralNetwork(int[] layer, string modelName)
         {
+            ModelName = modelName;
+
             //deep copy layers
             this.layer = new int[layer.Length];
             for (int i = 0; i < layer.Length; i++)
@@ -230,6 +237,31 @@ namespace NeuralNetworks
                 }
             }
         }
-    }
 
+        public void SaveModel()
+        {
+            string output = JsonConvert.SerializeObject(this);
+            string path = $"/model/{ModelName}.txt";
+
+            string fileName = Path.Combine(path, ModelName + ".json");
+            using (var file = File.CreateText(fileName))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, this);
+                file.Close();
+            }
+        }
+        public static NeuralNetwork LoadModel(string modelName)
+        {
+            string path = $"/model/{modelName}.txt";
+
+            string fileName = Path.Combine(path, modelName + ".json");
+
+            using (var file = File.OpenText(fileName))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                return (NeuralNetwork)serializer.Deserialize(file, typeof(NeuralNetwork));
+            }
+        }
+    }
 }

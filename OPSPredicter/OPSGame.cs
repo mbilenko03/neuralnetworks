@@ -9,10 +9,10 @@ namespace OPSPredicter
     class OPSGame
     {
         public int GameNumber;
-        public int[] PlayerOPS = new int[18];
+        public double[] PlayerOPS = new double[18];
         public int[] TeamScores = new int[2];
 
-        public OPSGame(int gameNumber, int[] playerOPS, int[] teamScores)
+        public OPSGame(int gameNumber, double[] playerOPS, int[] teamScores)
         {
             GameNumber = gameNumber;
 
