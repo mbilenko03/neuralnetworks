@@ -238,11 +238,8 @@ namespace NeuralNetworks
             }
         }
 
-        public void SaveModel()
+        public void SaveModel(string path)
         {
-            string output = JsonConvert.SerializeObject(this);
-            string path = $"/model/{ModelName}.txt";
-
             string fileName = Path.Combine(path, ModelName + ".json");
             using (var file = File.CreateText(fileName))
             {
@@ -251,10 +248,8 @@ namespace NeuralNetworks
                 file.Close();
             }
         }
-        public static NeuralNetwork LoadModel(string modelName)
+        public static NeuralNetwork LoadModel(string modelName, string path)
         {
-            string path = $"/model/{modelName}.txt";
-
             string fileName = Path.Combine(path, modelName + ".json");
 
             using (var file = File.OpenText(fileName))

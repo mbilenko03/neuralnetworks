@@ -14,18 +14,8 @@ namespace OPSPredicter
     {
         [STAThread]
         static void Main(string[] args)
-            {
-            //var device = DeviceDescriptor.GPUDevice(0);
-
-            //Console.WriteLine($"======== running OPSPredict.Train using {device.Type} ========");
-
-            //OPSPredict.Train(device);
-
-            //OPSPredict.
-
-            Parser.ParseUrl(526517);
-
-            //Choose neural network to test and save model to model
-            }
+        {
+            OPSPredict.TrainModelThrough()
         }
     }
+}
