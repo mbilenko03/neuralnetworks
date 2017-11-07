@@ -15,13 +15,23 @@ namespace OPSPredicter
 
         public static void TrainModelAt(NeuralNetwork net, int gameNumber)
         {
-            string path = Directory.GetCurrentDirectory() + "/Model";
+            Console.WriteLine($"Training at {gameNumber}");
+            string path = Directory.GetCurrentDirectory() + @"\..\..\Model";
 
             OPSGame game = Parser.ParseUrl(gameNumber);
+            
+            if (game == null)
+            {
+                Console.WriteLine(gameNumber + " was empty");
+                return;
+            }
+
             net.FeedForward(ToFloatArray(game.PlayerOPS));
             net.BackProp(ToFloatArray(game.TeamScores));
             
             net.SaveModel(path);
+
+            Console.WriteLine("Train sucessful!");
         }
 
         public static void TrainModelThrough(NeuralNetwork net, int minGameNumber, int maxGameNumber, int epochs)
@@ -36,6 +46,7 @@ namespace OPSPredicter
             
             for (int i = 0; i < epochs; i++)
             {
+                Console.WriteLine($"=====>{epochs}<=====");
                 for (int j = minGameNumber; j <= maxGameNumber; j++)
                 {
                     TrainModelAt(net, j);
@@ -48,6 +59,22 @@ namespace OPSPredicter
             float[] array = ToFloatArray(ops);
             
             Console.WriteLine(net.FeedForward(array)[0] + ", " + net.FeedForward(array)[1]);
+        }
+
+        public static void TestModel(NeuralNetwork net, int gameNumber)
+        {
+            OPSGame game = Parser.ParseUrl(gameNumber);
+            if (game == null)
+            { 
+                Console.WriteLine("Empty Page");
+                return;
+            }
+
+            Console.WriteLine("Expected outcome:");
+            Console.WriteLine(game.TeamScores[0] + ", " + game.TeamScores[1]);         
+
+            Console.WriteLine("Perdicted outcome:");
+            Console.WriteLine(net.FeedForward(ToFloatArray(game.PlayerOPS))[0] + ", " + net.FeedForward(ToFloatArray(game.PlayerOPS))[1]);  
         }
 
         static float[] ToFloatArray(double[] arr)

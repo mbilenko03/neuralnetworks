@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HtmlAgilityPack;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
-using System.Globalization;
 
 namespace OPSPredicter
 {
-    class Parser
+    static class Parser
     {
         public static OPSGame ParseUrl(int gameNumber)
         {
@@ -21,55 +15,45 @@ namespace OPSPredicter
             string url = ("https://www.mlb.com/gameday/" + gameNumber + "?#game_state=final,game_tab=box,game=" + gameNumber);
             string content = GetContent(url); ;
 
+            // Ensure content is dynamic
             do
             {
                 contentIsDynamic = CheckIfDynamic(content, gameNumber);
                 content = GetContent(url);
             } while (!contentIsDynamic);
 
-            //What to extract from content
+            // Check if page is blank
+            if (content.Contains("We did not find the page you were looking for. Did you type the link correctly?"))
+                return null;
+
+            // What to extract from content
             double[] playerOPS = new double[18];
             int[] teamScores = new int[2];
 
-            // Get Scores
-            string findGameScore = "data-game-pk=\"" + gameNumber + "\">";
-            int gameScoreScope = content.IndexOf(findGameScore);
+            // Method to get scores
+            int position = content.IndexOf("data-game-pk=\"" + gameNumber + "\">");
+            int maxIterations = content.Length - position;
 
             int count = 0;
-
-            for (int i = 0; i < (content.Length - gameScoreScope); i++)
+            for (int i = 0; i < maxIterations; i++)
             {
                 if (count > 1)
                     break;
 
-                int place = gameScoreScope + i;
+                position = content.IndexOf("s gameText\">", position) + 12;
+                int score = ExtractScoreContent(content, position);
 
-                char lastChar = content[place];
-
-                if (lastChar == '>' && content[place - 1] == '"' && content[place - 2] == 't' && content[place - 3] == 'x' && content[place - 4] == 'e'
-                    && content[place - 5] == 'T' && content[place - 6] == 'e' && content[place - 7] == 'm' && content[place - 8] == 'a' && content[place - 9] == 'g'
-                    && content[place - 10] == ' ' && content[place - 11] == 's')
-                {
-                    teamScores[count] = Int32.Parse(content[place + 1].ToString());
-                    count++;
-                }
+                teamScores[count] = score;
+                count++;
             }
 
-            // Get OPS
-            string findBattingStats = "batting stats";
-            int battingStatsScope = content.IndexOf(findBattingStats);
+            // Method to get OPS
+            position = content.IndexOf("batting stats");
+            maxIterations = content.Length - position;
 
             bool isBattingOrderOdd = true;
             count = 0;
-            // Check if count over 17
-            // Check what batting order is up
-            // Find the OPS and add to array
-            // Change Batting order
-            // Increase count
-            // if count 10 revert change in batting order
-            int position = battingStatsScope;
-
-            for (int i = 0; i < (content.Length - battingStatsScope); i++)
+            for (int i = 0; i < maxIterations; i++)
             {
                 if (count > 17)
                     break;
@@ -98,19 +82,39 @@ namespace OPSPredicter
                 }
             }
 
+            /*
+             * DEBUG
+             */
+            Debug.Print($"Debugging {gameNumber}...");
+            
             //Debug Scores
-            for (int i = 0; i < 2; i++)
-            {
-                Debug.Print(teamScores[i].ToString());
-            }
+            Debug.Print(teamScores[0].ToString() + "-" + teamScores[1].ToString());
 
             //Debug OPS
             for (int i = 0; i < 18; i++)
             {
-                Debug.Print(playerOPS[i].ToString() + " " + (i+ 1).ToString());
+                Debug.Print((i + 1).ToString() + " " + playerOPS[i].ToString());
             }
+            /*
+             * DEBUG
+             */
 
             return new OPSGame(gameNumber, playerOPS, teamScores);
+        }
+
+        private static int ExtractScoreContent(string content, int position)
+        {
+            int endPosition = content.IndexOf('<', position);
+            if (endPosition < 0)
+                throw new ApplicationException("Score has invalid format");
+
+            string value = content.Substring(position, endPosition - position);
+
+            int score;
+            if (!Int32.TryParse(value, out score))
+                throw new ApplicationException($"Score not number {value}");
+
+            return score;
         }
 
         private static double ExtractOPSContent(string content, int position)

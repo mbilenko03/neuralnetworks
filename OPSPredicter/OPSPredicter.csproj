@@ -42,7 +42,6 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@ namespace OPSPredicter
 {
     class OPSGame
     {
-        public int GameNumber;
+        public readonly int GameNumber;
         public double[] PlayerOPS = new double[18];
         public int[] TeamScores = new int[2];
 
