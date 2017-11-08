@@ -17,8 +17,19 @@ namespace OPSPredicter
         {
             Console.WriteLine($"Training at {gameNumber}");
             string path = Directory.GetCurrentDirectory() + @"\..\..\Model";
+            string dataPath = Directory.GetCurrentDirectory() + @"\..\..\Data";
 
-            OPSGame game = Parser.ParseUrl(gameNumber);
+            //Check if data is already saved
+            //if not null then parse
+            OPSData data = OPSData.GetData(dataPath, "data");
+            OPSGame game;
+            if (data.GetGame(gameNumber) == null)
+            {
+                game = Parser.ParseUrl(gameNumber);
+                data.AddGame(game);
+            }
+            else
+                game = data.GetGame(gameNumber);
             
             if (game == null)
             {
@@ -30,6 +41,7 @@ namespace OPSPredicter
             net.BackProp(ToFloatArray(game.TeamScores));
             
             net.SaveModel(path);
+            data.SaveData(dataPath, "data");
 
             Console.WriteLine("Train sucessful!");
         }

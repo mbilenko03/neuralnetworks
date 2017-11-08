@@ -17,15 +17,20 @@ namespace OPSPredicter
         static void Main(string[] args)
         {
             string path = Directory.GetCurrentDirectory() + @"\..\..\Model";
-            NeuralNetwork net = OPSPredict.CreateModel("test");
-            OPSPredict.TrainModelThrough(net, 526417, 526517, 10);
-            Console.WriteLine("Finished Training");
-            //OPSPredict.TrainModelAt(NeuralNetwork.LoadModel("test", path), 526484);
-            //OPSPredict.TestModel(NeuralNetwork.LoadModel("test", path), 526517);
 
-            //Parser.ParseUrl(526484);
+            //Train(526475, 526517, 10);
+
+            OPSPredict.TestModel(NeuralNetwork.LoadModel("test", path), 256252);
+
 
             Console.ReadLine();
+        }
+
+        private static void Train(int min, int max, int epochs)
+        {
+            NeuralNetwork net = OPSPredict.CreateModel("test");
+            OPSPredict.TrainModelThrough(net, min, max, epochs);
+            Console.WriteLine("=============Finished Training=============");
         }
     }
 }

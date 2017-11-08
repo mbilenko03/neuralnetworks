@@ -110,8 +110,7 @@ namespace OPSPredicter
 
             string value = content.Substring(position, endPosition - position);
 
-            int score;
-            if (!Int32.TryParse(value, out score))
+            if (!Int32.TryParse(value, out int score))
                 throw new ApplicationException($"Score not number {value}");
 
             return score;
