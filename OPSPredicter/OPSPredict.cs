@@ -23,10 +23,15 @@ namespace OPSPredicter
             //if not null then parse
             OPSData data = OPSData.GetData(dataPath, "data");
             OPSGame game;
-            if (data.GetGame(gameNumber) == null)
+
+            //Check if not empty game and not already added to data
+            if (data.GetGame(gameNumber) == null && !data.emptyGames.Contains(gameNumber))
             {
                 game = Parser.ParseUrl(gameNumber);
-                data.AddGame(game);
+                if (game != null)
+                    data.AddGame(game);
+                else
+                    data.AddEmptyGame(gameNumber);
             }
             else
                 game = data.GetGame(gameNumber);
@@ -87,6 +92,41 @@ namespace OPSPredicter
 
             Console.WriteLine("Perdicted outcome:");
             Console.WriteLine(net.FeedForward(ToFloatArray(game.PlayerOPS))[0] + ", " + net.FeedForward(ToFloatArray(game.PlayerOPS))[1]);  
+        }
+
+        public static void GetDataThrough(int minGameNumber, int maxGameNumber)
+        {
+            string dataPath = Directory.GetCurrentDirectory() + @"\..\..\Data";
+
+            // If min and max is fliped
+            if (minGameNumber > maxGameNumber)
+            {
+                int temp = maxGameNumber;
+                maxGameNumber = minGameNumber;
+                minGameNumber = temp;
+            }
+
+            Console.WriteLine("=========>Starting to collect data<=========");
+            for (int i = minGameNumber; i <= maxGameNumber; i++)
+            {
+                Console.WriteLine($"Getting game data for {i}...");
+                OPSData data = OPSData.GetData(dataPath, "data");
+
+                // Check if there is no game data and is not empty game
+                if(data.GetGame(i) == null && !data.emptyGames.Contains(i))
+                {
+                    // Parse Game and update it to the data
+                    OPSGame game = Parser.ParseUrl(i);
+
+                    if (game != null)
+                        data.AddGame(game);
+                    else
+                        data.AddEmptyGame(i);
+
+                    data.SaveData(dataPath, "data");
+                }
+                Console.WriteLine($"Data updated for {i}...");
+            }
         }
 
         static float[] ToFloatArray(double[] arr)
