@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
+using System.Text;
 
 namespace OPSPredicter
 {
@@ -32,6 +33,8 @@ namespace OPSPredicter
 
             // Method to get scores
             int position = content.IndexOf("data-game-pk=\"" + gameNumber + "\">");
+            if (position == -1)
+                position = 0;
             int maxIterations = content.Length - position;
 
             int count = 0;
@@ -40,7 +43,11 @@ namespace OPSPredicter
                 if (count > 1)
                     break;
 
-                position = content.IndexOf("s gameText\">", position) + 12;
+                // Get score (works for all games)
+                position = content.IndexOf("score\">", position) + 7;
+                if (content[position] == 'R')
+                    position = content.IndexOf("score\">", position + 1) + 7;
+
                 int score = ExtractScoreContent(content, position);
 
                 teamScores[count] = score;
@@ -144,6 +151,9 @@ namespace OPSPredicter
             var documentAsIHtmlDocument3 = (mshtml.IHTMLDocument3)webBrowser1.Document.DomDocument;
             StringReader sr = new StringReader(documentAsIHtmlDocument3.documentElement.outerHTML);
             doc.Load(sr);
+
+            //Debug
+            System.IO.File.WriteAllText(@"C:\Users\mbile\Desktop\example.txt", doc.DocumentNode.OuterHtml);
 
             return doc.DocumentNode.OuterHtml;
         }

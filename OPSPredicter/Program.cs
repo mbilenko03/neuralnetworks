@@ -18,9 +18,9 @@ namespace OPSPredicter
         {
             string path = Directory.GetCurrentDirectory() + @"\..\..\Model";
 
-            //Train(526475, 526517, 10);
+            //Train(244519, 526517, 10);
 
-            OPSPredict.TestModel(NeuralNetwork.LoadModel("test", path), 256252);
+            //OPSPredict.TestModel(NeuralNetwork.LoadModel("test", path), 244519);
 
 
             Console.ReadLine();
