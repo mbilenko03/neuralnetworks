@@ -119,9 +119,15 @@ namespace OPSPredicter
                     OPSGame game = Parser.ParseUrl(i);
 
                     if (game != null)
+                    {
                         data.AddGame(game);
+                        Console.WriteLine(" > Adding game stats.");
+                    }
                     else
+                    {
                         data.AddEmptyGame(i);
+                        Console.WriteLine(" > Adding empty game");
+                    }
 
                     data.SaveData(dataPath, "data");
                 }

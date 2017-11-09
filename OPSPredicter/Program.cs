@@ -21,7 +21,19 @@ namespace OPSPredicter
             //Train(244519, 526517, 10);
 
             //OPSPredict.TestModel(NeuralNetwork.LoadModel("test", path), 244519);
-            OPSPredict.GetDataThrough(347740, 526517);
+            
+
+            //OPSPredict.TestModel(NeuralNetwork.LoadModel("test", path), 347830);
+
+           
+
+            //OPSPredict.GetDataThrough(347740, 526517);
+            // Fix around 347869 
+            //getting empty when there is data
+            //figure out exceptions stuff
+            // make sure empty data is updated when you fix parsing
+
+            OPSPredict.GetDataThrough(449037, 449037);
 
             Console.ReadLine();
         }

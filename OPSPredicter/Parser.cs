@@ -13,8 +13,6 @@ namespace OPSPredicter
 
         public static OPSGame ParseUrl(int gameNumber)
         {
-            try
-            {
                 bool contentIsDynamic = false;
 
                 // Get content based on gameNumber
@@ -53,7 +51,15 @@ namespace OPSPredicter
                     if (content[position] == 'R')
                         position = content.IndexOf("score\">", position + 1) + 7;
 
-                    int score = ExtractScoreContent(content, position);
+                int score;
+                try
+                {
+                    score = ExtractScoreContent(content, position);
+                }
+                catch
+                {
+                    return null;
+                }
 
                     teamScores[count] = score;
                     count++;
@@ -121,11 +127,6 @@ namespace OPSPredicter
                  */
 
                 return new OPSGame(gameNumber, playerOPS, teamScores);
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         private static int ExtractScoreContent(string content, int position)
