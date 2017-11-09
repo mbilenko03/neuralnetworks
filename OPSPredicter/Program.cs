@@ -18,22 +18,16 @@ namespace OPSPredicter
         {
             string path = Directory.GetCurrentDirectory() + @"\..\..\Model";
 
-            //Train(244519, 526517, 10);
+            // TODO fix neural network (no change in results from inputs)
+            // TODO fix dynamic content on old games (ex: 245094)
 
-            //OPSPredict.TestModel(NeuralNetwork.LoadModel("test", path), 244519);
-            
-
-            //OPSPredict.TestModel(NeuralNetwork.LoadModel("test", path), 347830);
-
-           
-
-            //OPSPredict.GetDataThrough(347740, 526517);
-            // Fix around 347869 
-            //getting empty when there is data
-            //figure out exceptions stuff
-            // make sure empty data is updated when you fix parsing
-
-            OPSPredict.GetDataThrough(449037, 449037);
+            /* 
+             * 244519 to 526517
+             * OPSPredict.GetDataThrough(526517, 244519);
+             * OPSPredict.TrainModelWithData(net, 10);
+             * NeuralNetwork.LoadModel("test", path)
+             * OPSPredict.TestModel(NeuralNetwork.LoadModel("test", path), 526516);
+             */
 
             Console.ReadLine();
         }

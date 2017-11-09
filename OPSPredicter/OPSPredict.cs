@@ -9,7 +9,7 @@ namespace OPSPredicter
     {
         public static NeuralNetwork CreateModel(string modelName)
         {
-            NeuralNetwork net = new NeuralNetwork(new int[] {18, 29, 29, 2}, modelName);
+            NeuralNetwork net = new NeuralNetwork(new int[] { 18, 29, 29, 2 }, modelName);
             return net;
         }
 
@@ -35,7 +35,7 @@ namespace OPSPredicter
             }
             else
                 game = data.GetGame(gameNumber);
-            
+
             if (game == null)
             {
                 Console.WriteLine(gameNumber + " was empty");
@@ -44,7 +44,7 @@ namespace OPSPredicter
 
             net.FeedForward(ToFloatArray(game.PlayerOPS));
             net.BackProp(ToFloatArray(game.TeamScores));
-            
+
             net.SaveModel(path);
             data.SaveData(dataPath, "data");
 
@@ -60,7 +60,7 @@ namespace OPSPredicter
                 maxGameNumber = minGameNumber;
                 minGameNumber = temp;
             }
-            
+
             for (int i = 0; i < epochs; i++)
             {
                 Console.WriteLine($"=====>{epochs}<=====");
@@ -71,10 +71,34 @@ namespace OPSPredicter
             }
         }
 
+        public static void TrainModelWithData(NeuralNetwork net, int epochs)
+        {
+            string path = Directory.GetCurrentDirectory() + @"\..\..\Model";
+            string dataPath = Directory.GetCurrentDirectory() + @"\..\..\Data";
+            OPSData data = OPSData.GetData(dataPath, "data");
+            var games = data.games;
+
+            for (int j = 0; j < epochs; j++)
+            {
+                foreach (OPSGame value in games.Values)
+                {
+                    Console.WriteLine($"Training at {value.GameNumber}");
+                    net.FeedForward(ToFloatArray(value.PlayerOPS));
+                    net.BackProp(ToFloatArray(value.TeamScores));
+
+                    net.SaveModel(path);
+                    data.SaveData(dataPath, "data");
+
+                    Console.WriteLine("Train sucessful!");
+                }
+            }
+        }
+
+
         public static void TestModel(NeuralNetwork net, double[] ops)
         {
             float[] array = ToFloatArray(ops);
-            
+
             Console.WriteLine(net.FeedForward(array)[0] + ", " + net.FeedForward(array)[1]);
         }
 
@@ -82,16 +106,16 @@ namespace OPSPredicter
         {
             OPSGame game = Parser.ParseUrl(gameNumber);
             if (game == null)
-            { 
+            {
                 Console.WriteLine("Empty Page");
                 return;
             }
 
             Console.WriteLine("Expected outcome:");
-            Console.WriteLine(game.TeamScores[0] + ", " + game.TeamScores[1]);         
+            Console.WriteLine(game.TeamScores[0] + ", " + game.TeamScores[1]);
 
             Console.WriteLine("Perdicted outcome:");
-            Console.WriteLine(net.FeedForward(ToFloatArray(game.PlayerOPS))[0] + ", " + net.FeedForward(ToFloatArray(game.PlayerOPS))[1]);  
+            Console.WriteLine(net.FeedForward(ToFloatArray(game.PlayerOPS))[0] + ", " + net.FeedForward(ToFloatArray(game.PlayerOPS))[1]);
         }
 
         public static void GetDataThrough(int minGameNumber, int maxGameNumber)
@@ -107,13 +131,13 @@ namespace OPSPredicter
             }
 
             Console.WriteLine("=========>Starting to collect data<=========");
-            for (int i = minGameNumber; i <= maxGameNumber; i++)
+            for (int i = maxGameNumber; i >= minGameNumber; i--)
             {
                 Console.WriteLine($"Getting game data for {i}...");
                 OPSData data = OPSData.GetData(dataPath, "data");
 
                 // Check if there is no game data and is not empty game
-                if(data.GetGame(i) == null && !data.emptyGames.Contains(i))
+                if (data.GetGame(i) == null && !data.emptyGames.Contains(i))
                 {
                     // Parse Game and update it to the data
                     OPSGame game = Parser.ParseUrl(i);
