@@ -60,7 +60,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NeuralNetwork123123\NeuralNetwork.csproj">
+    <ProjectReference Include="..\NeuralNetwork\NeuralNetwork.csproj">
       <Project>{dbf64557-ad65-41b5-8049-e7a9d29aa9e1}</Project>
       <Name>NeuralNetwork</Name>
     </ProjectReference>
