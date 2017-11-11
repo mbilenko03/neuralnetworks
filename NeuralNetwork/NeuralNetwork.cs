@@ -54,10 +54,7 @@ namespace NeuralNetworks
             layers[0].FeedForward(inputs);
             for (int i = 1; i < layers.Length; i++)
             {
-                if (i != layers.Length - 1)
                     layers[i].FeedForward(layers[i - 1].outputs);
-                else
-                    layers[i].FeedForwardWithoutSig(layers[i - 1].outputs);
             }
 
             return layers[layers.Length - 1].outputs; //return output of last layer
@@ -161,24 +158,7 @@ namespace NeuralNetworks
                         outputs[i] += inputs[j] * weights[i, j];
                     }
 
-                        outputs[i] = (float)Math.Tanh(outputs[i]);
-                }
-
-                return outputs;
-            }
-
-            public float[] FeedForwardWithoutSig(float[] inputs)
-            {
-                this.inputs = inputs;// keep shallow copy which can be used for back propagation
-
-                //feed forwards
-                for (int i = 0; i < numberOfOuputs; i++)
-                {
-                    outputs[i] = 0;
-                    for (int j = 0; j < numberOfInputs; j++)
-                    {
-                        outputs[i] += inputs[j] * weights[i, j];
-                    }
+                        outputs[i] = (float)Math.Tanh(outputs[i]);        
                 }
 
                 return outputs;
@@ -206,7 +186,7 @@ namespace NeuralNetworks
 
                 //Gamma calculation
                 for (int i = 0; i < numberOfOuputs; i++)
-                    gamma[i] = error[i] /** TanHDer(outputs[i])*/;
+                    gamma[i] = error[i] * TanHDer(outputs[i]);
 
                 //Caluclating detla weights
                 for (int i = 0; i < numberOfOuputs; i++)

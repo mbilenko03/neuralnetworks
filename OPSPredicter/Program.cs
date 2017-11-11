@@ -15,19 +15,31 @@ namespace OPSPredicter
     {
         [STAThread]
         static void Main(string[] args)
-        {
-            string path = Directory.GetCurrentDirectory() + @"\..\..\Model";
 
+        {
             // TODO fix neural network (no change in results from inputs)
             // TODO fix dynamic content on old games (ex: 245094)
 
             /* 
              * 244519 to 526517
-             * OPSPredict.GetDataThrough(526517, 244519);
+             * v gets data for 2017 season
+             * OPSPredict.GetDataThrough(526517, 490102);
              * OPSPredict.TrainModelWithData(net, 10);
              * NeuralNetwork.LoadModel("test", path)
              * OPSPredict.TestModel(NeuralNetwork.LoadModel("test", path), 526516);
+             * OPSPredict.TestModel(net, 526517);
              */
+
+            //OPSPredict.GetDataThrough(492523, 490102);
+
+
+            //NeuralNetwork net = OPSPredict.CreateModel("Model01");
+            //OPSPredict.TrainModelWithData(net, 10);
+
+            NeuralNetwork net = OPSPredict.LoadModel("Model01");
+            OPSPredict.TestModel(net, 526517);
+
+
 
             Console.ReadLine();
         }

@@ -13,6 +13,12 @@ namespace OPSPredicter
             return net;
         }
 
+        public static NeuralNetwork LoadModel(string modelName)
+        {
+            string path = Directory.GetCurrentDirectory() + @"\..\..\Model";
+            return NeuralNetwork.LoadModel(modelName, path);
+        }
+
         public static void TrainModelAt(NeuralNetwork net, int gameNumber)
         {
             Console.WriteLine($"Training at {gameNumber}");

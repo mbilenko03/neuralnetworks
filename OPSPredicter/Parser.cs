@@ -76,6 +76,15 @@ namespace OPSPredicter
                 count++;
             }
 
+            try
+            {
+                Normalize(teamScores);
+            }
+            catch
+            {
+                return null;
+            }
+
             // Method to get OPS
             position = content.IndexOf("batting stats");
             maxIterations = content.Length - position;
@@ -139,6 +148,25 @@ namespace OPSPredicter
              */
 
             return new OPSGame(gameNumber, playerOPS, teamScores);
+        }
+
+        private static void Normalize(int[] teamScores)
+        {
+            //Convert scores to 1 or 0
+            if (teamScores[0] > teamScores[1])
+            {
+                teamScores[0] = 1;
+                teamScores[1] = 0;
+            }
+            else if (teamScores[1] > teamScores[0])
+            {
+                teamScores[0] = 0;
+                teamScores[1] = 1;
+            }
+            else
+            {
+                throw new Exception("Scores are the same");       
+            }
         }
 
         private static int ExtractScoreContent(string content, int position)
