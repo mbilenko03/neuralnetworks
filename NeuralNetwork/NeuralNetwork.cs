@@ -2,7 +2,6 @@
 using CNTK;
 using Newtonsoft.Json;
 using System.IO;
-using System.Text;
 
 namespace NeuralNetworks
 {
