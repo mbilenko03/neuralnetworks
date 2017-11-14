@@ -29,7 +29,7 @@ namespace OPSPredicter
             //OPSPredict.TrainModelWithData(net, 10);
 
             NeuralNetwork net = OPSPredict.LoadModel("Model01");
-            OPSPredict.TestModel(net, 526517);
+            OPSPredict.TestModel(net, 526514);
 
 
 
