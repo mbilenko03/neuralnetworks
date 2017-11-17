@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPSPredicter", "OPSPredicte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetwork", "NeuralNetwork\NeuralNetwork.csproj", "{DBF64557-AD65-41B5-8049-E7A9D29AA9E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockPredicter", "StockPredicter\StockPredicter.csproj", "{0F0862DF-DC3F-45D9-8104-85656C969CE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DBF64557-AD65-41B5-8049-E7A9D29AA9E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBF64557-AD65-41B5-8049-E7A9D29AA9E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBF64557-AD65-41B5-8049-E7A9D29AA9E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F0862DF-DC3F-45D9-8104-85656C969CE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F0862DF-DC3F-45D9-8104-85656C969CE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F0862DF-DC3F-45D9-8104-85656C969CE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F0862DF-DC3F-45D9-8104-85656C969CE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

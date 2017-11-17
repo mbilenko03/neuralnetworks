@@ -3,19 +3,19 @@ using CNTK;
 using Newtonsoft.Json;
 using System.IO;
 
-namespace NeuralNetworks
+namespace NeuralNetwork
 {
     /// <summary>
     /// Simple MLP Neural Network
     /// </summary>
-    public class NeuralNetwork
+    public class BasicNetwork
     {
         public string ModelName;
 
         public int[] layer; //layer information
         public Layer[] layers; //layers in the network
 
-        public NeuralNetwork()
+        public BasicNetwork()
         {
 
         }
@@ -24,7 +24,7 @@ namespace NeuralNetworks
         /// Constructor setting up layers
         /// </summary>
         /// <param name="layer">Layers of this network</param>
-        public NeuralNetwork(int[] layer, string modelName)
+        public BasicNetwork(int[] layer, string modelName)
         {
             ModelName = modelName;
 
@@ -252,14 +252,14 @@ namespace NeuralNetworks
                 file.Close();
             }
         }
-        public static NeuralNetwork LoadModel(string modelName, string path)
+        public static BasicNetwork LoadModel(string modelName, string path)
         {
             string fileName = Path.Combine(path, modelName + ".json");
 
             using (var file = File.OpenText(fileName))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                return (NeuralNetwork)serializer.Deserialize(file, typeof(NeuralNetwork));
+                return (BasicNetwork)serializer.Deserialize(file, typeof(BasicNetwork));
             }
         }
     }

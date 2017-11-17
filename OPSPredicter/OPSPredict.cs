@@ -1,4 +1,4 @@
-﻿using NeuralNetworks;
+﻿using NeuralNetwork;
 using System;
 using System.IO;
 
@@ -6,19 +6,19 @@ namespace OPSPredicter
 {
     static class OPSPredict
     {
-        public static NeuralNetwork CreateModel(string modelName)
+        public static BasicNetwork CreateModel(string modelName)
         {
-            NeuralNetwork net = new NeuralNetwork(new int[] { 18, 29, 29, 2 }, modelName);
+            BasicNetwork net = new BasicNetwork(new int[] { 18, 29, 29, 2 }, modelName);
             return net;
         }
 
-        public static NeuralNetwork LoadModel(string modelName)
+        public static BasicNetwork LoadModel(string modelName)
         {
             string path = Directory.GetCurrentDirectory() + @"\..\..\Model";
-            return NeuralNetwork.LoadModel(modelName, path);
+            return BasicNetwork.LoadModel(modelName, path);
         }
 
-        public static void TrainModelAt(NeuralNetwork net, int gameNumber)
+        public static void TrainModelAt(BasicNetwork net, int gameNumber)
         {
             Console.WriteLine($"Training at {gameNumber}");
             string path = Directory.GetCurrentDirectory() + @"\..\..\Model";
@@ -56,7 +56,7 @@ namespace OPSPredicter
             Console.WriteLine("Train sucessful!");
         }
 
-        public static void TrainModelThrough(NeuralNetwork net, int minGameNumber, int maxGameNumber, int epochs)
+        public static void TrainModelThrough(BasicNetwork net, int minGameNumber, int maxGameNumber, int epochs)
         {
             // If min and max is fliped
             if (minGameNumber > maxGameNumber)
@@ -76,7 +76,7 @@ namespace OPSPredicter
             }
         }
 
-        public static void TrainModelWithData(NeuralNetwork net, int epochs)
+        public static void TrainModelWithData(BasicNetwork net, int epochs)
         {
             string path = Directory.GetCurrentDirectory() + @"\..\..\Model";
             string dataPath = Directory.GetCurrentDirectory() + @"\..\..\Data";
@@ -100,14 +100,14 @@ namespace OPSPredicter
         }
 
 
-        public static void TestModel(NeuralNetwork net, double[] ops)
+        public static void TestModel(BasicNetwork net, double[] ops)
         {
             float[] array = ToFloatArray(ops);
 
             Console.WriteLine(net.FeedForward(array)[0] + ", " + net.FeedForward(array)[1]);
         }
 
-        public static void TestModel(NeuralNetwork net, int gameNumber)
+        public static void TestModel(BasicNetwork net, int gameNumber)
         {
             OPSGame game = Parser.ParseUrl(gameNumber);
             if (game == null)

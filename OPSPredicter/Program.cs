@@ -1,4 +1,4 @@
-﻿using NeuralNetworks;
+﻿using NeuralNetwork;
 using System;
 
 namespace OPSPredicter
@@ -28,7 +28,7 @@ namespace OPSPredicter
             //NeuralNetwork net = OPSPredict.CreateModel("Model01");
             //OPSPredict.TrainModelWithData(net, 10);
 
-            NeuralNetwork net = OPSPredict.LoadModel("Model01");
+            BasicNetwork net = OPSPredict.LoadModel("Model01");
             OPSPredict.TestModel(net, 526514);
 
 
@@ -38,7 +38,7 @@ namespace OPSPredicter
 
         private static void Train(int min, int max, int epochs)
         {
-            NeuralNetwork net = OPSPredict.CreateModel("test");
+            BasicNetwork net = OPSPredict.CreateModel("test");
             OPSPredict.TrainModelThrough(net, min, max, epochs);
             Console.WriteLine("=============Finished Training=============");
         }
